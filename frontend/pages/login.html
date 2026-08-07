@@ -1,0 +1,42 @@
+{{> header title="Login"}}
+
+<main class="container py-4">
+  <h1>Login</h1>
+  <div class="card p-4 shadow-sm" style="max-width: 400px;">
+    <h2 class="mb-3">Login</h2>
+
+    <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Benutzername</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        required
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Passwort</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+      >
+    </div>
+
+    <button type="button" class="btn btn-primary w-100">
+      Einloggen
+    </button>
+  </div>
+
+  <p class="text-body-secondary mt-3">
+    Diese Seite ist eine Ausgangsbasis für die Implementierung der Anmeldung.
+  </p>
+</main>
+
+{{>footer}}

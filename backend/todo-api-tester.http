@@ -1,0 +1,30 @@
+### Todo erstellen
+
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "text": "Rasen im Garten von Opa mähen"
+}
+
+### Alle Todos abrufen
+
+GET http://localhost:8080/api/todos
+
+### Einzelnes Todo abrufen
+
+GET http://localhost:8080/api/todos/3
+
+### Todo aktualisieren
+
+PUT http://localhost:8080/api/todos/3
+Content-Type: application/json
+
+{
+  "text": "Rasen im Garten und vor dem Haus von Opa mähen",
+  "done": true
+}
+
+### Todo löschen
+
+DELETE http://localhost:8080/api/todos/3

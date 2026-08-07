@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="SEQUENCE" style="width:811px;height:580px;background:#FFFFFF;" width="811px" height="580px" viewBox="100 0 811 580" zoomAndPan="magnify" preserveAspectRatio="none" contentStyleType="text/css">
+  <?plantuml 1.2026.7beta8?>
+  <defs/>
+  <g font-family="sans-serif" lengthAdjust="spacing">
+    <g class="title" data-source-line="1">
+      <text x="245.719" y="27.995" fill="#000" font-size="14" textLength="519.791" font-weight="700">REST API Zusammenspiel: Frontend, Vert.x Backend und MariaDB</text>
+    </g>
+    <rect x="277.222" y="48.297" width="482.497" height="517.32" fill="#DDD" style="stroke:#181818;stroke-width:0.5;"/>
+    <text x="462.589" y="60.364" fill="#000" font-size="13" textLength="111.763" font-weight="700">Vert.x Backend</text>
+    <g>
+      <title>Frontend</title>
+      <rect x="160.446" y="143.727" width="8" height="339.594" fill="#000" fill-opacity="0"/>
+      <line x1="163.946" y1="143.727" x2="163.946" y2="483.32" style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;"/>
+    </g>
+    <g>
+      <title>TodoController</title>
+      <rect x="336.593" y="143.727" width="8" height="339.594" fill="#000" fill-opacity="0"/>
+      <line x1="340.093" y1="143.727" x2="340.093" y2="483.32" style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;"/>
+    </g>
+    <g>
+      <title>TodoService</title>
+      <rect x="513.496" y="143.727" width="8" height="339.594" fill="#000" fill-opacity="0"/>
+      <line x1="516.996" y1="143.727" x2="516.996" y2="483.32" style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;"/>
+    </g>
+    <g>
+      <title>TodoRepository</title>
+      <rect x="690.398" y="143.727" width="8" height="339.594" fill="#000" fill-opacity="0"/>
+      <line x1="693.898" y1="143.727" x2="693.898" y2="483.32" style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;"/>
+    </g>
+    <g>
+      <title>MariaDB</title>
+      <rect x="864.095" y="143.727" width="8" height="339.594" fill="#000" fill-opacity="0"/>
+      <line x1="867.595" y1="143.727" x2="867.595" y2="483.32" style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5,5;"/>
+    </g>
+    <rect x="125.392" y="112.43" width="77.109" height="30.297" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="132.392" y="132.425" fill="#000" font-size="14" textLength="63.109">Frontend</text>
+    <rect x="281.222" y="96.133" width="117.742" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="288.222" y="116.128" fill="#000" font-size="14" textLength="103.742">TodoController</text>
+    <text x="340.093" y="132.425" fill="#000" font-size="12" text-anchor="middle">REST-Verarbeitung</text>
+    <rect x="456.84" y="96.133" width="120.311" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="516.996" y="116.128" fill="#000" font-size="14" text-anchor="middle">TodoService</text>
+    <text x="516.996" y="132.425" fill="#000" font-size="12" text-anchor="middle">Anwendungslogik</text>
+    <rect x="627.077" y="96.133" width="133.642" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="693.898" y="116.128" fill="#000" font-size="14" text-anchor="middle">TodoRepository</text>
+    <text x="693.898" y="132.425" fill="#000" font-size="12" text-anchor="middle">Datenbankzugriff</text>
+    <text x="834.961" y="140.425" fill="#000" font-size="14" textLength="59.268">MariaDB</text>
+    <path d="M849.595,91.43 C849.595,81.43 867.595,81.43 867.595,81.43 C867.595,81.43 885.595,81.43 885.595,91.43 L885.595,117.43 C885.595,127.43 867.595,127.43 867.595,127.43 C867.595,127.43 849.595,127.43 849.595,117.43 L849.595,91.43" style="stroke:#181818;stroke-width:0.5;" fill="#E2E2F0"/>
+    <path d="M849.595,91.43 C849.595,101.43 867.595,101.43 867.595,101.43 C867.595,101.43 885.595,101.43 885.595,91.43" style="stroke:#181818;stroke-width:0.5;" fill="none"/>
+    <rect x="125.392" y="483.32" width="77.109" height="30.297" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="132.392" y="503.315" fill="#000" font-size="14" textLength="63.109">Frontend</text>
+    <rect x="281.222" y="483.32" width="117.742" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="288.222" y="503.315" fill="#000" font-size="14" textLength="103.742">TodoController</text>
+    <text x="340.093" y="519.612" fill="#000" font-size="12" text-anchor="middle">REST-Verarbeitung</text>
+    <rect x="456.84" y="483.32" width="120.311" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="516.996" y="503.315" fill="#000" font-size="14" text-anchor="middle">TodoService</text>
+    <text x="516.996" y="519.612" fill="#000" font-size="12" text-anchor="middle">Anwendungslogik</text>
+    <rect x="627.077" y="483.32" width="133.642" height="46.594" fill="#E2E2F0" style="stroke:#181818;stroke-width:0.5;" rx="2.5" ry="2.5"/>
+    <text x="693.898" y="503.315" fill="#000" font-size="14" text-anchor="middle">TodoRepository</text>
+    <text x="693.898" y="519.612" fill="#000" font-size="12" text-anchor="middle">Datenbankzugriff</text>
+    <text x="834.961" y="496.315" fill="#000" font-size="14" textLength="59.268">MariaDB</text>
+    <path d="M849.595,509.617 C849.595,499.617 867.595,499.617 867.595,499.617 C867.595,499.617 885.595,499.617 885.595,509.617 L885.595,535.617 C885.595,545.617 867.595,545.617 867.595,545.617 C867.595,545.617 849.595,545.617 849.595,535.617 L849.595,509.617" style="stroke:#181818;stroke-width:0.5;" fill="#E2E2F0"/>
+    <path d="M849.595,509.617 C849.595,519.617 867.595,519.617 867.595,519.617 C867.595,519.617 885.595,519.617 885.595,509.617" style="stroke:#181818;stroke-width:0.5;" fill="none"/>
+    <polygon points="328.093,213.125,338.093,217.125,328.093,221.125,332.093,217.125" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="163.946" y1="217.125" x2="334.093" y2="217.125" style="stroke:#181818;stroke-width:1;"/>
+    <text x="170.946" y="196.926" fill="#000" font-size="13" textLength="103.016">POST /api/todos</text>
+    <text x="170.946" y="212.059" fill="#000" font-size="13">{text: "Einkaufen"}</text>
+    <polygon points="504.996,242.258,514.996,246.258,504.996,250.258,508.996,246.258" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="340.093" y1="246.258" x2="510.996" y2="246.258" style="stroke:#181818;stroke-width:1;"/>
+    <text x="347.093" y="241.192" fill="#000" font-size="13">create("Einkaufen")</text>
+    <polygon points="681.898,271.391,691.898,275.391,681.898,279.391,685.898,275.391" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="516.996" y1="275.391" x2="687.898" y2="275.391" style="stroke:#181818;stroke-width:1;"/>
+    <text x="523.996" y="270.325" fill="#000" font-size="13">create("Einkaufen")</text>
+    <polygon points="855.595,300.523,865.595,304.523,855.595,308.523,859.595,304.523" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="693.898" y1="304.523" x2="861.595" y2="304.523" style="stroke:#181818;stroke-width:1;"/>
+    <text x="700.898" y="299.458" fill="#000" font-size="13" textLength="149.697">INSERT INTO todos (...)</text>
+    <polygon points="704.898,329.656,694.898,333.656,704.898,337.656,700.898,333.656" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="698.898" y1="333.656" x2="866.595" y2="333.656" style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;"/>
+    <text x="710.898" y="328.59" fill="#000" font-size="13" textLength="76.965">Neues Todo</text>
+    <polygon points="527.996,358.789,517.996,362.789,527.996,366.789,523.996,362.789" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="521.996" y1="362.789" x2="692.898" y2="362.789" style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;"/>
+    <text x="533.996" y="357.723" fill="#000" font-size="13" textLength="32.1">Todo</text>
+    <polygon points="351.093,387.922,341.093,391.922,351.093,395.922,347.093,391.922" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="345.093" y1="391.922" x2="515.996" y2="391.922" style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;"/>
+    <text x="357.093" y="386.856" fill="#000" font-size="13" textLength="32.1">Todo</text>
+    <polygon points="174.946,432.188,164.946,436.188,174.946,440.188,170.946,436.188" fill="#181818" style="stroke:#181818;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+    <line x1="168.946" y1="436.188" x2="339.093" y2="436.188" style="stroke:#181818;stroke-width:1;stroke-dasharray:2,2;"/>
+    <text x="180.946" y="415.989" fill="#000" font-size="13" textLength="80.679">201 Created</text>
+    <text x="180.946" y="431.122" fill="#000" font-size="13" textLength="90.759">Todo als JSON</text>
+  </g>
+</svg>

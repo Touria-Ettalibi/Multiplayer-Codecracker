@@ -1,0 +1,155 @@
+{{> header title="Todo Demo"}}
+
+<main class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h2 mb-1">Todo Demo</h1>
+
+          <p class="text-body-secondary mb-0">
+            Todo-Beispiel um das
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#architectureModal"
+            >
+              Zusammenspiel zwischen Frontend und Backend
+            </a>
+            über REST und WebSockets zu demonstrieren.
+          </p>
+
+          <p class="text-body-secondary mb-0">
+            Die Ereignisse beim Anlegen, Aktualisieren oder Löschen von Todos
+            werden über einen WebSocket veröffentlicht und können hier
+            beobachtet werden:
+            <a href="/pages/ws-inspect.html" target="_blank">
+              WebSocket Inspector
+            </a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <fieldset class="mb-4">
+            <legend class="form-label fw-semibold mb-2">
+              Transport für Todo-Aktionen
+            </legend>
+
+            <div class="d-flex flex-wrap align-items-center gap-3">
+              <div class="btn-group" role="group" aria-label="Transport auswählen">
+                <input
+                  id="transport-rest"
+                  class="btn-check"
+                  type="radio"
+                  name="transport"
+                  value="rest"
+                  checked
+                />
+                <label class="btn btn-outline-primary" for="transport-rest">
+                  REST
+                </label>
+
+                <input
+                  id="transport-websocket"
+                  class="btn-check"
+                  type="radio"
+                  name="transport"
+                  value="websocket"
+                />
+                <label class="btn btn-outline-primary" for="transport-websocket">
+                  WebSocket
+                </label>
+              </div>
+
+              <span id="websocket-status" class="badge text-bg-secondary">
+                WebSocket getrennt
+              </span>
+            </div>
+
+            <div id="transport-help" class="form-text">
+              Laden und Ändern erfolgen über die REST-Schnittstelle.
+            </div>
+          </fieldset>
+
+          <form id="todo-form">
+            <label for="todo-text" class="form-label fw-semibold">
+              Neues Todo
+            </label>
+
+            <div class="input-group">
+              <input
+                id="todo-text"
+                class="form-control"
+                type="text"
+                placeholder="Was möchtest du erledigen?"
+                autocomplete="off"
+                maxlength="100"
+                required
+              />
+
+              <button class="btn btn-primary" type="submit">
+                Hinzufügen
+              </button>
+            </div>
+          </form>
+
+          <div
+            id="todo-error"
+            class="alert alert-danger mt-3 mb-0"
+            role="alert"
+            hidden
+          ></div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-body py-3">
+          <h2 class="h5 mb-0">Todoliste</h2>
+        </div>
+
+        <div class="card-body p-0">
+          <ul id="todo-list" class="list-group list-group-flush"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div
+  class="modal fade"
+  id="architectureModal"
+  tabindex="-1"
+  aria-labelledby="architectureModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="architectureModalLabel">
+          Zusammenspiel zwischen Frontend und Backend
+        </h2>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Schließen"
+        ></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img
+          src="/assets/todo-rest-api.svg"
+          class="img-fluid"
+          alt="Sequenzdiagramm zum Zusammenspiel zwischen Frontend, Vert.x Backend und MariaDB"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/src/todo.ts"></script>
+
+{{> footer}}
