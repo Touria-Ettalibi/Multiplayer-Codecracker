@@ -1,0 +1,56 @@
+{{> header title="Registrieren"}}
+
+<main class="container py-4 d-flex justify-content-center">
+  <div class="card p-4 shadow-sm" style="max-width: 420px; width: 100%;">
+    <h1 class="h3 mb-1">Registrieren</h1>
+    <p class="text-body-secondary mb-4">Erstelle ein neues Benutzerkonto.</p>
+
+    <form id="registerForm" novalidate>
+      <div id="registerError" class="alert alert-danger d-none" role="alert"></div>
+      <div id="registerSuccess" class="alert alert-success d-none" role="alert"></div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Benutzername</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          placeholder="Benutzername wählen"
+          autocomplete="username"
+          maxlength="50"
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Passwort</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        >
+        <div class="form-text">Mindestens 8 Zeichen.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Registrieren
+      </button>
+    </form>
+
+    <hr class="my-4">
+
+    <p class="text-body-secondary text-center mb-2">Bereits ein Benutzerkonto?</p>
+    <a href="/pages/login.html" class="btn btn-secondary w-100">
+      Zum Login
+    </a>
+  </div>
+</main>
+
+<script type="module" src="/src/register.ts"></script>
+
+{{>footer}}
