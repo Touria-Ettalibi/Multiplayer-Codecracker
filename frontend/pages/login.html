@@ -1,42 +1,52 @@
 {{> header title="Login"}}
 
-<main class="container py-4">
-  <h1>Login</h1>
-  <div class="card p-4 shadow-sm" style="max-width: 400px;">
-    <h2 class="mb-3">Login</h2>
+<main class="container py-4 d-flex justify-content-center">
+  <div class="card p-4 shadow-sm" style="max-width: 420px; width: 100%;">
+    <h1 class="h3 mb-1">Login</h1>
+    <p class="text-body-secondary mb-4">Melde dich an, um zur Lobby zu gelangen.</p>
 
-    <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
+    <form id="loginForm" novalidate>
+      <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
 
-    <div class="mb-3">
-      <label for="username" class="form-label">Benutzername</label>
-      <input
-        type="text"
-        class="form-control"
-        id="username"
-        name="username"
-        required
-      >
-    </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Benutzername</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          placeholder="Benutzername eingeben"
+          autocomplete="username"
+          required
+        >
+      </div>
 
-    <div class="mb-3">
-      <label for="password" class="form-label">Passwort</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        required
-      >
-    </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Passwort</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
 
-    <button type="button" class="btn btn-primary w-100">
-      Einloggen
-    </button>
+      <button type="submit" class="btn btn-primary w-100">
+        Anmelden
+      </button>
+    </form>
+
+    <hr class="my-4">
+
+    <p class="text-body-secondary text-center mb-2">Noch kein Benutzerkonto?</p>
+    <a href="/pages/register.html" class="btn btn-secondary w-100">
+      Registrieren
+    </a>
   </div>
-
-  <p class="text-body-secondary mt-3">
-    Diese Seite ist eine Ausgangsbasis für die Implementierung der Anmeldung.
-  </p>
 </main>
+
+<script type="module" src="/src/login.ts"></script>
 
 {{>footer}}
