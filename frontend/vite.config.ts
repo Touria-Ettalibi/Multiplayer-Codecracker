@@ -17,7 +17,9 @@ export default defineConfig({
       input: {
         index: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'pages/login.html'),
+        register: resolve(__dirname, 'pages/register.html'),
         dashboard: resolve(__dirname, 'pages/dashboard.html'),
+        users: resolve(__dirname, 'pages/users.html'),
         todo: resolve(__dirname, 'pages/todo.html'),
         wsinspect: resolve(__dirname, 'pages/ws-inspect.html'),
       },

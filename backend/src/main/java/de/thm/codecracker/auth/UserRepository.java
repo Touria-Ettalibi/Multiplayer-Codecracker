@@ -2,6 +2,7 @@ package de.thm.codecracker.auth;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import de.thm.codecracker.auth.model.User;
 import io.vertx.core.Future;
@@ -101,6 +102,136 @@ public class UserRepository {
    */
   public Future<Boolean> existsByUsername(String username) {
     return findByUsername(username).map(user -> user != null);
+  }
+
+  /**
+   * Checks whether a different User already uses the given username.
+   *
+   * <p>Used when editing a User, so that a User keeping their own username
+   * is not mistaken for a conflict.</p>
+   *
+   * @param username the username to check
+   * @param id       the ID of the User being edited
+   * @return a future containing {@code true} if another User already has this username
+   */
+  public Future<Boolean> existsByUsernameExcludingId(String username, Long id) {
+    String sql = """
+      SELECT id, username, password_hash, role, created_at
+      FROM users
+      WHERE username = ? AND id <> ?
+      """;
+
+    RowSet<Row> rows = pool.preparedQuery(sql)
+      .execute(Tuple.of(username, id))
+      .await();
+
+    return Future.succeededFuture(rows.iterator().hasNext());
+  }
+
+  /**
+   * Finds all Users, optionally filtered by a search term matched against the username.
+   *
+   * @param search a case-insensitive substring to match against usernames,
+   *                or {@code null}/blank to return every User
+   * @return a future containing all matching Users ordered by ID
+   */
+  public Future<List<User>> findAll(String search) {
+    String pattern = (search == null || search.isBlank()) ? null : "%" + search.trim() + "%";
+
+    String sql = """
+      SELECT id, username, password_hash, role, created_at
+      FROM users
+      WHERE ? IS NULL OR username LIKE ?
+      ORDER BY id
+      """;
+
+    RowSet<Row> rows = pool.preparedQuery(sql)
+      .execute(Tuple.of(pattern, pattern))
+      .await();
+
+    List<User> users = rows.stream()
+      .map(this::toUser)
+      .toList();
+
+    return Future.succeededFuture(users);
+  }
+
+  /**
+   * Updates a User's username and role.
+   *
+   * @param id       the user ID
+   * @param username the new username
+   * @param role     the new role
+   * @return a future containing the updated User, or {@code null} if it does not exist
+   */
+  public Future<User> update(Long id, String username, String role) {
+    String sql = """
+      UPDATE users
+      SET username = ?, role = ?
+      WHERE id = ?
+      """;
+
+    RowSet<Row> result = pool.preparedQuery(sql)
+      .execute(Tuple.of(username, role, id))
+      .await();
+
+    if (result.rowCount() == 0) {
+      return Future.succeededFuture(null);
+    }
+
+    return findById(id);
+  }
+
+  /**
+   * Updates a User's password hash.
+   *
+   * @param id           the user ID
+   * @param passwordHash the new bcrypt hash
+   * @return a future containing {@code true} if a User was updated
+   */
+  public Future<Boolean> updatePasswordHash(Long id, String passwordHash) {
+    String sql = """
+      UPDATE users
+      SET password_hash = ?
+      WHERE id = ?
+      """;
+
+    RowSet<Row> result = pool.preparedQuery(sql)
+      .execute(Tuple.of(passwordHash, id))
+      .await();
+
+    return Future.succeededFuture(result.rowCount() > 0);
+  }
+
+  /**
+   * Deletes a User by its ID.
+   *
+   * @param id the user ID
+   * @return a future containing {@code true} if a User was deleted
+   */
+  public Future<Boolean> deleteById(Long id) {
+    String sql = "DELETE FROM users WHERE id = ?";
+
+    RowSet<Row> result = pool.preparedQuery(sql)
+      .execute(Tuple.of(id))
+      .await();
+
+    return Future.succeededFuture(result.rowCount() > 0);
+  }
+
+  /**
+   * Counts how many Users currently have the {@code ADMIN} role.
+   *
+   * @return a future containing the number of admin Users
+   */
+  public Future<Long> countByRole(String role) {
+    String sql = "SELECT COUNT(*) AS total FROM users WHERE role = ?";
+
+    RowSet<Row> rows = pool.preparedQuery(sql)
+      .execute(Tuple.of(role))
+      .await();
+
+    return Future.succeededFuture(rows.iterator().next().getLong("total"));
   }
 
   /**

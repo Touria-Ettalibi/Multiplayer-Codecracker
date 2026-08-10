@@ -1,1 +1,3 @@
-window.location.replace("/pages/todo.html");
+import { isLoggedIn } from "./auth-storage";
+
+window.location.replace(isLoggedIn() ? "/pages/dashboard.html" : "/pages/login.html");
