@@ -1,12 +1,14 @@
 package de.thm.codecracker;
 
+import de.thm.codecracker.auth.AuthController;
+import de.thm.codecracker.auth.AuthService;
+import de.thm.codecracker.auth.UserRepository;
 import de.thm.codecracker.config.AppConfig;
 import de.thm.codecracker.config.DatabaseConfig;
-import de.thm.codecracker.todo.TodoController;
-import de.thm.codecracker.todo.TodoRepository;
-import de.thm.codecracker.todo.TodoService;
-import de.thm.codecracker.todo.TodoWebSocketController;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.ext.auth.PubSecKeyOptions;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerFormat;
@@ -24,19 +26,20 @@ public class MainVerticle extends AbstractVerticle {
 
     var pool = DatabaseConfig.createPool(vertx, config);
 
-    var todoRepository = new TodoRepository(pool);
-    var todoService = new TodoService(todoRepository, vertx);
-    var todoController = new TodoController(todoService);
+    JWTAuth jwtAuth = JWTAuth.create(vertx, new JWTAuthOptions()
+      .addPubSecKey(new PubSecKeyOptions()
+        .setAlgorithm("HS256")
+        .setBuffer(config.jwtSecret())));
 
-    var todoWebSocketController = new TodoWebSocketController(vertx, todoService);
-    todoWebSocketController.registerEventBusConsumer();
+    var userRepository = new UserRepository(pool);
+    var authService = new AuthService(userRepository, jwtAuth);
+    var authController = new AuthController(authService);
 
     Router router = Router.router(vertx);
     router.route().handler(LoggerHandler.create(LoggerFormat.DEFAULT));
     router.route().handler(BodyHandler.create());
 
-    todoController.registerRoutes(router);
-    todoWebSocketController.registerRoutes(router);
+    authController.registerRoutes(router);
 
     router.get("/").handler(ctx ->
       ctx.response()

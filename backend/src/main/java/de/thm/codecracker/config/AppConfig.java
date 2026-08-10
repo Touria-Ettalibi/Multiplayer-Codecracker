@@ -6,7 +6,8 @@ public record AppConfig(
   String dbName,
   String dbUser,
   String dbPassword,
-  int httpPort
+  int httpPort,
+  String jwtSecret
 ) {
   public static AppConfig fromEnvironment() {
     return new AppConfig(
@@ -15,7 +16,8 @@ public record AppConfig(
       env("DB_NAME", "codecracker"),
       env("DB_USER", "codecracker"),
       env("DB_PASSWORD", "secret"),
-      envInt("HTTP_PORT", 8080)
+      envInt("HTTP_PORT", 8080),
+      env("JWT_SECRET", "dev-only-jwt-secret-change-me-before-deploying")
     );
   }
 
