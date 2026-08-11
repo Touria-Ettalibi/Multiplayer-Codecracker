@@ -211,10 +211,11 @@ public class GameInviteService {
       .put("gameId", game.id())
       .put("playerUserIds", new JsonArray(readyUserIds)));
 
-    vertx.eventBus().<String>consumer("game:" + game.id(), message -> {
+    var gameEndedConsumer = vertx.eventBus().<String>consumer("game:" + game.id());
+    gameEndedConsumer.handler(message -> {
       JsonObject event = new JsonObject(message.body());
       if ("game-ended".equals(event.getString("type"))) {
-        message.unregister();
+        gameEndedConsumer.unregister();
         onGameEnded(session, game.id());
       }
     });
