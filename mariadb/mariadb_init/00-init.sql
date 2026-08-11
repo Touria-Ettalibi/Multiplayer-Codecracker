@@ -63,8 +63,9 @@ CREATE INDEX idx_game_players_result ON game_players(result);
 CREATE INDEX idx_games_ended_at ON games(ended_at);
 
 -- Initial admin account required at first startup.
--- Replace the password hash with a real bcrypt hash before using this
--- outside of local development.
+-- Username: admin / Password: Admin1234 (bcrypt hash below).
+-- This is a LOCAL DEVELOPMENT credential only — rotate it (or the whole
+-- hash) before this schema is ever used outside your own machine.
 INSERT INTO users (username, password_hash, role)
-VALUES ('admin', '$2a$10$REPLACE_WITH_REAL_BCRYPT_HASH', 'ADMIN')
+VALUES ('admin', '$2a$10$NmaBJvoSRFPhe1xpVxwiAOxeUQ1zZBocmGjgDmrotlz.4NGDLRHFm', 'ADMIN')
 ON DUPLICATE KEY UPDATE username = username;

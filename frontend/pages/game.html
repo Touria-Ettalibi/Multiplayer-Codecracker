@@ -1,0 +1,168 @@
+{{> header title="Spiel"}}
+
+<style>
+  .color-swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+  .color-swatch.selected {
+    border-color: #212529;
+  }
+  .position-slot {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px dashed #ced4da;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .position-slot.filled {
+    border-style: solid;
+    border-color: transparent;
+    cursor: default;
+  }
+  .history-row {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .history-code-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+  }
+  .feedback-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .feedback-dot-exact {
+    background: #212529;
+  }
+  .feedback-dot-color {
+    background: transparent;
+    border: 2px solid #212529;
+  }
+</style>
+
+<main class="container py-4">
+
+  <div id="gameError" class="alert alert-danger d-none" role="alert"></div>
+  <div id="gameInfo" class="alert alert-info d-none" role="alert"></div>
+
+  <!-- Active round view -->
+  <div id="activeRoundView" class="row g-4 d-none">
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h4 mb-0" id="roundLabel">Runde 1 von 10</h1>
+            <span class="text-body-secondary" id="timeLabel">Verbleibende Zeit: 30 s</span>
+          </div>
+
+          <h2 class="h6">1. Farbe auswählen</h2>
+          <div class="d-flex gap-2 align-items-center mb-3" id="colorPalette">
+          </div>
+          <p class="text-body-secondary small mb-3">Farben dürfen mehrfach verwendet werden.</p>
+
+          <h2 class="h6">2. Codeposition auswählen</h2>
+          <div class="d-flex gap-3 mb-2" id="positionSlots">
+          </div>
+          <div class="d-flex gap-3 mb-4">
+            <span class="small text-body-secondary" style="width: 60px;">Position 1</span>
+            <span class="small text-body-secondary" style="width: 60px;">Position 2</span>
+            <span class="small text-body-secondary" style="width: 60px;">Position 3</span>
+            <span class="small text-body-secondary" style="width: 60px;">Position 4</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <button class="btn btn-primary" id="confirmButton" disabled>Code bestätigen</button>
+            <span class="text-body-secondary small">
+              Erst aktiv, wenn alle vier Positionen belegt sind.
+            </span>
+          </div>
+          <p class="text-body-secondary small mb-4">
+            Nach der Bestätigung ist der Code für diese Runde gesperrt.
+          </p>
+
+          <button class="btn btn-outline-danger" id="forfeitButton">Spiel abbrechen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-1">Codehistorie</h2>
+          <p class="text-body-secondary small mb-3">Eigene Versuche mit kompaktem Feedback</p>
+
+          <div id="historyList">
+          </div>
+
+          <p class="small mb-1">
+            <span class="feedback-dot feedback-dot-exact"></span>
+            richtige Farbe und Position
+          </p>
+          <p class="small mb-3">
+            <span class="feedback-dot feedback-dot-color"></span>
+            richtige Farbe, falsche Position
+          </p>
+
+          <div class="alert alert-warning small mb-0">
+            <strong>Bei Zeitablauf</strong><br>
+            Der aktuell vollständige Code wird automatisch übermittelt. Ein unvollständiger
+            Code zählt nicht als gültiger Versuch.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game-over view -->
+  <div id="gameOverView" class="d-flex justify-content-center d-none">
+    <div class="card p-4 text-center" style="max-width: 640px; width: 100%;">
+      <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-success"
+           style="width: 64px; height: 64px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
+          <path d="M13.485 1.929a1 1 0 0 1 .057 1.414l-7.5 8a1 1 0 0 1-1.45.036L2.1 8.885a1 1 0 1 1 1.414-1.414l1.828 1.828 6.729-7.192a1 1 0 0 1 1.414-.178Z"/>
+        </svg>
+      </div>
+      <h1 class="h4 mb-1">Spiel beendet</h1>
+      <p class="fw-bold mb-1" id="gameOverHeadline"></p>
+      <p class="text-body-secondary mb-4" id="gameOverSubline"></p>
+
+      <table class="table table-borderless">
+        <thead>
+          <tr class="border-bottom">
+            <th>Spieler</th>
+            <th>Ergebnis</th>
+            <th class="text-end">Punkte aus diesem Spiel</th>
+            <th class="text-end">Gesamtpunkte</th>
+          </tr>
+        </thead>
+        <tbody id="resultsTableBody">
+        </tbody>
+      </table>
+
+      <button class="btn btn-primary mt-3" id="closeGameOverButton">Schließen</button>
+    </div>
+  </div>
+
+</main>
+
+<script type="module" src="/src/require-auth.ts"></script>
+<script type="module" src="/src/game.ts"></script>
+
+{{> footer}}

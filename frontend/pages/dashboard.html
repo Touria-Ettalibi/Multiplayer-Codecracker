@@ -2,26 +2,51 @@
 
 <main class="container py-4">
   <div class="row g-4">
+    <div class="col-12 col-lg-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-body py-3 d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0">Lobby</h2>
+          <span id="lobby-status" class="badge text-bg-secondary">Lobby getrennt</span>
+        </div>
+
+        <div class="card-body">
+          <p class="text-body-secondary small mb-2" id="lobbySubtitle">Aktuell angemeldete Benutzer</p>
+
+          <div id="lobbyError" class="alert alert-danger d-none" role="alert"></div>
+
+          <ul id="online-players-list" class="list-group mb-3"></ul>
+
+          <!-- Shown only while the current user has a pending invite to respond to. -->
+          <div id="inviteBanner" class="mb-3 d-none">
+            <p class="fw-semibold mb-1" id="inviteBannerTitle"></p>
+            <p class="text-body-secondary small mb-2">Möchtest du teilnehmen?</p>
+            <div class="d-flex gap-2">
+              <button type="button" id="inviteAcceptButton" class="btn btn-success">Bereit</button>
+              <button type="button" id="inviteDeclineButton" class="btn btn-secondary">Ablehnen</button>
+            </div>
+          </div>
+
+          <!-- Shown to everyone who is online but not part of the currently running game. -->
+          <div id="gameRunningBanner" class="alert alert-warning d-none mb-3">
+            <p class="fw-semibold mb-1">Aktuell läuft ein Spiel.</p>
+            <p class="mb-0">Du nimmst nicht teil. Danach kann ein neues Spiel starten.</p>
+          </div>
+
+          <button type="button" id="startGameButton" class="btn btn-outline-primary w-100" disabled>
+            Spiel starten
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="col-12 col-lg-8">
       <div class="card">
         <div class="card-body">
           <h1 class="card-title h3">Dashboard</h1>
           <p class="card-text">
             Diese Seite ist eine Ausgangsbasis für die Implementierung des Dashboards.
+            Der Highscore der letzten 10 Tage fehlt hier noch — siehe README.
           </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-lg-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-body py-3 d-flex justify-content-between align-items-center">
-          <h2 class="h6 mb-0">Online</h2>
-          <span id="lobby-status" class="badge text-bg-secondary">Lobby getrennt</span>
-        </div>
-
-        <div class="card-body p-0">
-          <ul id="online-players-list" class="list-group list-group-flush"></ul>
         </div>
       </div>
     </div>

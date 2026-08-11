@@ -20,6 +20,7 @@ export default defineConfig({
         register: resolve(__dirname, 'pages/register.html'),
         dashboard: resolve(__dirname, 'pages/dashboard.html'),
         users: resolve(__dirname, 'pages/users.html'),
+        game: resolve(__dirname, 'pages/game.html'),
         todo: resolve(__dirname, 'pages/todo.html'),
         wsinspect: resolve(__dirname, 'pages/ws-inspect.html'),
       },

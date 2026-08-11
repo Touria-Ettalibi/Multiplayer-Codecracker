@@ -6,6 +6,15 @@ import de.thm.codecracker.auth.RoleHandler;
 import de.thm.codecracker.auth.UserRepository;
 import de.thm.codecracker.config.AppConfig;
 import de.thm.codecracker.config.DatabaseConfig;
+import de.thm.codecracker.game.GameController;
+import de.thm.codecracker.game.GameRepository;
+import de.thm.codecracker.game.GameService;
+import de.thm.codecracker.game.GameWebSocketController;
+import de.thm.codecracker.invite.GameInviteController;
+import de.thm.codecracker.invite.GameInviteService;
+import de.thm.codecracker.lobby.LobbyBroadcaster;
+import de.thm.codecracker.lobby.LobbyController;
+import de.thm.codecracker.lobby.LobbyRegistry;
 import de.thm.codecracker.lobby.LobbyWebSocketController;
 import de.thm.codecracker.user.UserController;
 import de.thm.codecracker.user.UserService;
@@ -44,7 +53,23 @@ public class MainVerticle extends AbstractVerticle {
     var userService = new UserService(userRepository);
     var userController = new UserController(userService);
 
-    var lobbyWebSocketController = new LobbyWebSocketController(jwtAuth);
+    var lobbyRegistry = new LobbyRegistry();
+    var lobbyBroadcaster = new LobbyBroadcaster(lobbyRegistry);
+    var lobbyController = new LobbyController(lobbyRegistry);
+    var lobbyWebSocketController = new LobbyWebSocketController(jwtAuth, lobbyRegistry, lobbyBroadcaster);
+
+    var gameRepository = new GameRepository(pool);
+    var gameService = new GameService(vertx, gameRepository);
+    var gameController = new GameController(gameRepository, gameService);
+    var gameWebSocketController = new GameWebSocketController(vertx, jwtAuth, gameRepository, gameService);
+
+    // Ready-check flow that decides *who* starts the next Game; hands off
+    // to gameService.startGame(...) once enough players confirm. Reuses
+    // lobbyRegistry (to know who's online to invite) and lobbyBroadcaster
+    // (to push invite-started/status/started/cancelled events over the
+    // same lobby WebSocket already used for player-joined/player-left).
+    var gameInviteService = new GameInviteService(vertx, lobbyRegistry, lobbyBroadcaster, gameService);
+    var gameInviteController = new GameInviteController(gameInviteService);
 
     Router router = Router.router(vertx);
     router.route().handler(LoggerHandler.create(LoggerFormat.DEFAULT));
@@ -65,10 +90,26 @@ public class MainVerticle extends AbstractVerticle {
     // populated) and responds 403 if the caller's role claim isn't ADMIN.
     userController.registerRoutes(router, RoleHandler.requireRole(RoleHandler.ADMIN));
 
-    // Lobby WebSocket: validates its own token manually (browsers can't send
-    // custom headers on a WS handshake), so it sits outside the /api/* JWT
-    // middleware above rather than depending on it.
+    // Lobby snapshot: any logged-in User, protected by the same /api/* JWT handler above.
+    lobbyController.registerRoutes(router);
+
+    // Game invite (ready-check) actions: any logged-in User. Real-time
+    // updates for these go out over the Lobby WebSocket below, not a
+    // dedicated socket of their own.
+    gameInviteController.registerRoutes(router);
+
+    // Lobby WebSocket: not under /api/*, so it validates its own token
+    // (passed as a query param, since a WS handshake can't carry an
+    // Authorization header) before completing the upgrade.
     lobbyWebSocketController.registerRoutes(router);
+
+    // Game snapshot: any logged-in User, protected by the same /api/* JWT handler above.
+    // GameController itself additionally checks the caller is a player in the requested game.
+    gameController.registerRoutes(router);
+
+    // Game WebSocket: same token-as-query-param pattern as the Lobby socket,
+    // plus a game-membership check before the upgrade completes.
+    gameWebSocketController.registerRoutes(router);
 
     router.get("/").handler(ctx ->
       ctx.response()
