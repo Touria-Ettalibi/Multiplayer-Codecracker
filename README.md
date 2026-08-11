@@ -2,7 +2,7 @@
 
 > Dozenten: Sebastian Süß & Steffen Rupp
 
-## Projektaufgabe - Multiplayer Codecracker
+## Projektaufgabe - Multiplayer Codecracker feature websocket Lobby
 
 Entwickeln Sie eine Multiplayer-Anwendung nach dem Vorbild des bekannten Spiels [**Mastermind (Codecracker)**](https://de.wikipedia.org/wiki/Mastermind_(Spiel)).
 
