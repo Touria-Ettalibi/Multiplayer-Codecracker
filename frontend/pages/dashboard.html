@@ -1,16 +1,34 @@
 {{> header title="Dashboard"}}
 
 <main class="container py-4">
-  <div class="card">
-    <div class="card-body">
-      <h1 class="card-title h3">Dashboard</h1>
-      <p class="card-text">
-        Diese Seite ist eine Ausgangsbasis für die Implementierung des Dashboards.
-      </p>
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title h3">Dashboard</h1>
+          <p class="card-text">
+            Diese Seite ist eine Ausgangsbasis für die Implementierung des Dashboards.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-body py-3 d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0">Online</h2>
+          <span id="lobby-status" class="badge text-bg-secondary">Lobby getrennt</span>
+        </div>
+
+        <div class="card-body p-0">
+          <ul id="online-players-list" class="list-group list-group-flush"></ul>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
 <script type="module" src="/src/require-auth.ts"></script>
+<script type="module" src="/src/dashboard.ts"></script>
 
 {{> footer}}
