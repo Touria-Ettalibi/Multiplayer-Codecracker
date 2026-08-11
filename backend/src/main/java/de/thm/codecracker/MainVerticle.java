@@ -6,6 +6,7 @@ import de.thm.codecracker.auth.RoleHandler;
 import de.thm.codecracker.auth.UserRepository;
 import de.thm.codecracker.config.AppConfig;
 import de.thm.codecracker.config.DatabaseConfig;
+import de.thm.codecracker.lobby.LobbyWebSocketController;
 import de.thm.codecracker.user.UserController;
 import de.thm.codecracker.user.UserService;
 import io.vertx.core.AbstractVerticle;
@@ -43,6 +44,8 @@ public class MainVerticle extends AbstractVerticle {
     var userService = new UserService(userRepository);
     var userController = new UserController(userService);
 
+    var lobbyWebSocketController = new LobbyWebSocketController(jwtAuth);
+
     Router router = Router.router(vertx);
     router.route().handler(LoggerHandler.create(LoggerFormat.DEFAULT));
     router.route().handler(BodyHandler.create());
@@ -61,6 +64,11 @@ public class MainVerticle extends AbstractVerticle {
     // which runs after the JWT handler above (so ctx.user() is already
     // populated) and responds 403 if the caller's role claim isn't ADMIN.
     userController.registerRoutes(router, RoleHandler.requireRole(RoleHandler.ADMIN));
+
+    // Lobby WebSocket: validates its own token manually (browsers can't send
+    // custom headers on a WS handshake), so it sits outside the /api/* JWT
+    // middleware above rather than depending on it.
+    lobbyWebSocketController.registerRoutes(router);
 
     router.get("/").handler(ctx ->
       ctx.response()
