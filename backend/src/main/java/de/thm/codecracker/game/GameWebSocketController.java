@@ -94,21 +94,29 @@ public class GameWebSocketController {
   }
 
   private void verifyMembershipAndUpgrade(RoutingContext ctx, User authenticatedUser, Long gameId) {
-    Long userId = authenticatedUser.principal().getLong("uid");
+  Long userId = authenticatedUser.principal().getLong("uid");
+
+  try {
+    // Upgrade first, synchronously, right after the (instant, non-blocking)
+    // JWT check — same as LobbyWebSocketController. The membership check
+    // below is real DB I/O and must not happen before toWebSocket(): any
+    // async suspension here lets Vert.x mark this bodyless GET request as
+    // "ended" in the meantime, so a later toWebSocket() call fails with
+    // "Request has already been read". Checking membership after upgrading
+    // and closing the socket if it fails avoids that entirely.
+    ServerWebSocket socket = ctx.request().toWebSocket().await();
 
     var player = gameRepository.findPlayer(gameId, userId).await();
     if (player == null) {
-      ctx.response().setStatusCode(403).end();
+      socket.close((short) 4403, "Not a participant in this game");
       return;
     }
 
-    try {
-      ServerWebSocket socket = ctx.request().toWebSocket().await();
-      handleConnection(gameId, userId, socket);
-    } catch (Exception exception) {
-      ctx.fail(exception);
-    }
+    handleConnection(gameId, userId, socket);
+  } catch (Exception exception) {
+    ctx.fail(exception);
   }
+}
 
   private void handleConnection(Long gameId, Long userId, ServerWebSocket socket) {
     MessageConsumer<String> publicConsumer = vertx.eventBus().<String>consumer(
