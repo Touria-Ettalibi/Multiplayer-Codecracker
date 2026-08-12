@@ -71,6 +71,7 @@ public class GameWebSocketController {
   }
 
   private void upgradeConnection(RoutingContext ctx) {
+    ctx.request().pause();
     String token = ctx.request().getParam("token");
     String gameIdParam = ctx.request().getParam("gameId");
 
