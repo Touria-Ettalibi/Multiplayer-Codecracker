@@ -73,8 +73,7 @@ public class MainVerticle extends AbstractVerticle {
 
     Router router = Router.router(vertx);
     router.route().handler(LoggerHandler.create(LoggerFormat.DEFAULT));
-    router.route().handler(BodyHandler.create());
-
+    router.route("/api/*").handler(BodyHandler.create());
     // Public auth routes: registration and login must stay reachable
     // without a token, since they are how a token is obtained in the first place.
     authController.registerRoutes(router);
