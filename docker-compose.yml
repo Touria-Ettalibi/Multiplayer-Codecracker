@@ -7,7 +7,7 @@ services:
       MARIADB_DATABASE: ${DB_NAME}
       MARIADB_USER: ${DB_USER}
       MARIADB_PASSWORD: ${DB_PASSWORD}
-       TZ: UTC
+      TZ: UTC
     volumes:
       - ./mariadb/mariadb_init:/docker-entrypoint-initdb.d:ro
       - mariadb_data:/var/lib/mysql
